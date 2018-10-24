@@ -1,0 +1,4 @@
+fig.png
+*.pyc
+.DS_Store
+build
