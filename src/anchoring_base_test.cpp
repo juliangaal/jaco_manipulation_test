@@ -34,13 +34,13 @@ AnchorBaseTest::AnchorBaseTest(const std::vector<jaco_manipulation::BoundingBox>
 }
 
 std::vector<jaco_manipulation::BoundingBox>::const_iterator AnchorBaseTest::next_drop_box() {
-  if (current_drop_box_it_ == end(data_)) {
+  if (current_drop_box_it_ == std::end(data_)) {
     ROS_ERROR_STREAM("Reached end of data. But node did not successfully call ros::shudown(). This node will crash");
-    return end(data_);
+    return std::end(data_);
   }
 
-  if (current_drop_box_it_ == end(data_)-1) {
-    return end(data_);
+  if (current_drop_box_it_ == std::end(data_)-1) {
+    return std::end(data_);
   } else {
     return ++current_drop_box_it_;
   }
@@ -78,7 +78,7 @@ void AnchorBaseTest::show_summary(const std::vector<std::string> &labels) const 
   ROS_WARN_STREAM("-----");
   ROS_WARN_STREAM("Anchor " << target_label);
   std::stringstream ss;
-  std::copy(begin(labels), end(labels), std::ostream_iterator<std::string>(ss," "));
+  std::copy(begin(labels), std::end(labels), std::ostream_iterator<std::string>(ss," "));
   ROS_WARN_STREAM("Labels: " << ss.str());
   ROS_WARN_STREAM("-----");
 }

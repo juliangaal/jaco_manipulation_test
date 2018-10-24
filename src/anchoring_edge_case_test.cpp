@@ -73,11 +73,11 @@ bool AnchorEdgeCaseTest::anchors_published() const {
   ros::master::V_TopicInfo master_topics;
   ros::master::getTopics(master_topics);
 
-  auto topic_found_it = std::find_if(begin(master_topics), end(master_topics), [&](auto &top) {
+  auto topic_found_it = std::find_if(begin(master_topics), std::end(master_topics), [&](auto &top) {
     return top.name == topic_;
   });
 
-  return topic_found_it != end(master_topics);
+  return topic_found_it != std::end(master_topics);
 }
 
 jaco_manipulation::BoundingBox AnchorEdgeCaseTest::createBoundingBoxFromAnchors() const {

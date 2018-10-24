@@ -56,7 +56,7 @@ void AnchorTest::anchorArrayCallback(const anchor_msgs::AnchorArray::ConstPtr &m
   } else {
     jmc_.dropAt(adaptDropBoxToAnchorDims(current_drop_box_it_));
     about_to_drop = false;
-    if (next_drop_box() == end(data_)) {
+    if (next_drop_box() == std::end(data_)) {
       ROS_WARN_STREAM("Reached end of test.");
       ROS_WARN_STREAM("Waiting for last status from Jaco . . .");
       sleep(3);
@@ -72,11 +72,11 @@ bool AnchorTest::anchors_published() const {
   ros::master::V_TopicInfo master_topics;
   ros::master::getTopics(master_topics);
 
-  auto topic_found_it = std::find_if(begin(master_topics), end(master_topics), [&](auto &top) {
+  auto topic_found_it = std::find_if(begin(master_topics), std::end(master_topics), [&](auto &top) {
     return top.name == topic_;
   });
 
-  return topic_found_it != end(master_topics);
+  return topic_found_it != std::end(master_topics);
 }
 
 jaco_manipulation::BoundingBox AnchorTest::createBoundingBoxFromAnchors() const {

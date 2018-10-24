@@ -70,11 +70,11 @@ void ObstacleAnchorTest::anchorArrayCallback(const anchor_msgs::AnchorArray::Con
     }
 
     std::vector<int> indices(obstacles.size());
-    std::iota(begin(indices), end(indices), 1);
-    for (auto it = begin(obstacles); it != end(obstacles); ++it)
+    std::iota(begin(indices), std::end(indices), 1);
+    for (auto it = begin(obstacles); it != std::end(obstacles); ++it)
     {
       auto box = *it;
-      box.description = "obstacle-" + std::to_string(indices[std::distance(it, end(obstacles))-1]);
+      box.description = "obstacle-" + std::to_string(indices[std::distance(it, std::end(obstacles))-1]);
       jmc_.updatePlanningScene(box);
     }
 
@@ -84,7 +84,7 @@ void ObstacleAnchorTest::anchorArrayCallback(const anchor_msgs::AnchorArray::Con
   } else {
     jmc_.dropAt(target_object);
 
-    if (next_drop_box() == end(data_) or grip_counter_ == 30) {
+    if (next_drop_box() == std::end(data_) or grip_counter_ == 30) {
       ROS_WARN_STREAM("Reached end of test. " << grip_counter_ << " Tests run");
       ROS_WARN_STREAM("Waiting for last status from Jaco . . .");
       sleep(3);
@@ -113,12 +113,12 @@ SeparatedObstacles ObstacleAnchorTest::extractObstacles(const anchor_msgs::Ancho
   const auto &anchors = msg->anchors;
 
   auto contains = [](std::string str, std::string substr) { return str.find(substr) != std::string::npos; };
-  auto target_anchor_it = std::find_if(begin(anchors), end(anchors), [&](const auto &anchor) {
+  auto target_anchor_it = std::find_if(begin(anchors), std::end(anchors), [&](const auto &anchor) {
     return contains(anchor.x, "ball");
   });
 
   auto target_box = jaco_manipulation::BoundingBox();
-  bool target_found = target_anchor_it != end(anchors);
+  bool target_found = target_anchor_it != std::end(anchors);
   if (target_found)
   {
     target_box = AnchorBaseTest::createBoundingBoxFromAnchor(*target_anchor_it);
@@ -129,12 +129,12 @@ SeparatedObstacles ObstacleAnchorTest::extractObstacles(const anchor_msgs::Ancho
   }
 
   vector<anchor_msgs::Anchor> obstacle_anchors;
-  std::copy_if(begin(anchors), end(anchors), std::back_inserter(obstacle_anchors), [&](const auto& anchor) {
+  std::copy_if(begin(anchors), std::end(anchors), std::back_inserter(obstacle_anchors), [&](const auto& anchor) {
     return !contains(anchor.x, "ball");
   });
 
   vector<BoundingBox> obstacles;
-  std::transform(begin(obstacle_anchors), end(obstacle_anchors), std::back_inserter(obstacles), [this](const auto &anchor) {
+  std::transform(begin(obstacle_anchors), std::end(obstacle_anchors), std::back_inserter(obstacles), [this](const auto &anchor) {
     return this->createBoundingBoxFromAnchor(anchor, false);
   });
 
