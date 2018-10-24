@@ -20,7 +20,7 @@ using namespace jaco_manipulation::test;
 int main(int argc, char **argv) {
   ros::init(argc, argv, "AnchorTest");
 
-  BaselineCSVReader reader("/home/chitt/julian/reground_workspace/src/arm/jaco_manipulation/scripts/anchoring_poses.csv");
+  BaselineCSVReader reader("/home/chitt/julian/reground_workspace/src/arm/jaco_manipulation_test/post/anchoring_poses.csv");
   const auto &data = reader.getData();
   AnchorTest l(data);
 

@@ -20,7 +20,7 @@ using namespace jaco_manipulation::test;
 int main(int argc, char **argv) {
   ros::init(argc, argv, "AnchorTest");
 
-  BaselineCSVReader reader("/home/chitt/julian/reground_workspace/src/arm/jaco_manipulation/scripts/edge_case_poses.csv");
+  BaselineCSVReader reader("/home/chitt/julian/reground_workspace/src/arm/jaco_manipulation_test/post/edge_case_poses.csv");
   const auto &data = reader.getData();
   AnchorEdgeCaseTest l(data);
 
