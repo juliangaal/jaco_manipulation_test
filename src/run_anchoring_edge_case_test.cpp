@@ -21,6 +21,8 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "AnchorTest");
 
   BaselineCSVReader reader("/home/chitt/julian/reground_workspace/src/arm/jaco_manipulation_test/post/edge_case_poses.csv");
+  // EVEN THOUGH DATA IS ADDED, IT IS IGNORED BY THIS TEST SPECIFICIALLY
+  // IT WILL ONLY DO 17 GRASPS, MARKED ON THE REGROUND TABLE
   const auto &data = reader.getData();
   AnchorEdgeCaseTest l(data);
 

@@ -22,11 +22,24 @@ namespace test {
 
 class BaselineCSVReader : public CSVReader {
  public:
+  /// deleted default constructor
   BaselineCSVReader() = delete;
+
+  /**
+   * constructor
+   * @param filename of file to read
+   * @param delimiter of csv columns
+   */
   explicit BaselineCSVReader(std::string filename, std::string delimiter=",");
+
+  /// destructor
   ~BaselineCSVReader() final = default;
  private:
+
+  /// saves elements of single csv line as boundingbox from jaco manipulation
   void saveVec(const std::vector<std::string> &line) override;
+
+  /// processes the file
   void processFile(const std::string &filename) override;
 };
 

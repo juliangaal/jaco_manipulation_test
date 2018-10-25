@@ -22,19 +22,35 @@ namespace test {
 
 class AnchorTest : public AnchorBaseTest {
  public:
+  /// deleted default constructor
   AnchorTest() = delete;
 
+  /// constructor
   explicit AnchorTest(const std::vector<jaco_manipulation::BoundingBox> &datapoints);
 
+  /// destructor
   ~AnchorTest() final= default;
 
+  /**
+   * Callback fro subscriber
+   * @param msg anchorarray
+   */
   void anchorArrayCallback(const anchor_msgs::AnchorArray::ConstPtr &msg);
+
+  /**
+   * Checks whether or not anchors are published
+   * @return true if published
+   */
   bool anchors_published() const;
 
  private:
+  /// nodehandle
   ros::NodeHandle nh_;
+  /// subscriber
   ros::Subscriber sub_;
+  /// whether or not target anchor was found
   bool found_anchor_;
+  /// creates bounding box from anchor array (size 1 in this test specifically)
   jaco_manipulation::BoundingBox createBoundingBoxFromAnchors() const;
 };
 } // namespace tes

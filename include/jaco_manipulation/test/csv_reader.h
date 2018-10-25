@@ -25,18 +25,39 @@ namespace test {
 
 class CSVReader {
  public:
+  /// deleted default constructor
   CSVReader() = delete;
+
+  /// destructor
   virtual ~CSVReader();
 
+  /**
+   * Get bounding boxes that were generated from random poses in file
+   * @return vector of bounding boxes
+   */
   const std::vector<jaco_manipulation::BoundingBox>& getData() const;
 
+  /// Saves poses from single csv line as bounding boxes
   virtual void saveVec(const std::vector<std::string> &line) = 0;
+
+  /// processes file
   virtual void processFile(const std::string &filename) = 0;
 
  protected:
-  explicit CSVReader(const std::string filename, std::string delim = ",");
+  /**
+   * Constructor
+   * @param filename ro read from: ABSOLUTE PATH
+   * @param delim that seperated the csv columns
+   */
+  explicit CSVReader(const std::string filename, std::string delim = ";");
+
+  // vector of bounding boxes generated from poses in file
   std::vector<jaco_manipulation::BoundingBox> data;
+
+  /// filestream of opened file
   std::ifstream file;
+
+  /// delimiter of csv column
   std::string delimiter;
 };
 
