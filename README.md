@@ -1,6 +1,10 @@
-# How to run these tests
+# Jaco Manipulation Test
 
-# Rule #1
+ROS package to run tests of Jaco Robotic Arm and its [interfaces](https://github.com/juliangaal/jaco_manipulation) performance in the [ReGround Project](). 
+
+## How to run these tests
+
+## Rule #1
 **Always keep a finger on the power button on Jaco**. Movements can be fast from time to time, and error can occur at any time, though very rarely. The first things to break are Jacos fingers...
 
 ### 1. client\_grasp\_test.cpp
