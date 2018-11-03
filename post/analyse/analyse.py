@@ -46,54 +46,15 @@ class FileReader:
         self.file.close()
 
 class ResultPlotter:
-    def __init__(self, file, labels, delimiter=',', template=False):
-        self.current_dir = os.getcwd()
-        # catch possible relative paths from baseline/anchoring template files
-        file = os.path.abspath(file)
-        if not os.path.exists(file):
-            print "ResultPlotter: File does not exist:", file, "Exiting..."
-            exit()
-
-        # get desctiptor in front of file: e.g. 01
-        filename_only = os.path.basename(os.path.normpath(file))
-        self.descriptor = filename_only.partition("_")[0]
-        self.test_type = 'ERROR'
-        # get test type
-        if 'anchoring_edge_case' in filename_only:
-            self.test_type = 'anchoring_edge_case'
-            self.descriptor += "/" + os.path.basename(os.path.dirname(os.path.realpath(file)))
-        elif 'anchoring' in filename_only:
-            self.test_type = 'anchoring'
-        else:
-            pass
-
-        if 'baseline' in filename_only:
-            self.test_type = 'baseline'
-
-        if self.test_type == 'ERROR':
-            print "Files are not named correctly. Must include 'baseline', 'anchoring' or 'anchoring_edge_case'"
-            sys.exit()
-
-        # set target dir and file names
-        results_dir = os.path.abspath(os.path.join(self.current_dir, os.pardir)) + '/results/' + self.test_type
-        if not template:
-            self.target_dir = results_dir + '/' + self.descriptor
-        else:
-            self.target_dir = results_dir
-
-
-        self.file = file
-        self.figure_path_3d = self.target_dir + '/' + self.descriptor + '_3d_fig.png'
-        self.figure_path_2d = self.target_dir + '/' + self.descriptor + '_2d_fig.png'
+    def __init__(self, target_dir, file, labels, delimiter=',', template=False):
+        self.target_dir = target_dir
+        self.file = os.path.join(self.target_dir, file)
+        self.figure_path_3d = os.path.join(self.target_dir, '3d_fig.png')
+        self.figure_path_2d = os.path.join(self.target_dir, '2d_fig.png')
         self.labels = labels
         self.delimiter = delimiter
         self.points = []
         self.df = pd.read_csv(self.file, names=self.labels, sep=self.delimiter)
-
-        # change working directory
-        if not os.path.exists(self.target_dir):
-            print 'Creating', self.target_dir
-            os.mkdir(self.target_dir)
 
     def __extract_point(self, result_key, grip_result_key):
         data = self.df[result_key]
