@@ -64,15 +64,25 @@ class ResultPlotter:
             if d == result_key or r == grip_result_key:
                 continue
 
-            point, _ = d.split('/')
-            point = point.replace('(', '').replace(')', '')
-            x, y, z = point.split(',')
-            if grip_result_key == 'Result':
-                self.points.append(Point(x, y, z, True if r == 'success' else False))
-            else:
-                self.points.append(AnchorPoint(x,y,z,r))
+            try:
+                point, _ = d.split('/')
+                point = point.replace('(', '').replace(')', '')
+                x, y, z = point.split(',')
+                if grip_result_key == 'Result':
+                    self.points.append(Point(x, y, z, True if r == 'success' else False))
+                else:
+                    self.points.append(AnchorPoint(x,y,z,r))
+            except ValueError:
+                print "!!", ".csv data malformed: ", d
+                pass
 
-    def save3DResultFrom(self, result_key, grip_result_key='Result'):
+    def save3DResultFrom(self, result_key, grip_result_key='Result', force=False):
+        if not force:
+            for fname in os.listdir(self.target_dir):
+                if fname.endswith('.png'):
+                    print "Skipping existing plot"
+                    return
+
         fig = plt.figure()
         fig.suptitle(self.file)
         ax = fig.add_subplot(111, projection='3d')
@@ -127,7 +137,13 @@ class ResultPlotter:
                 plt.savefig(self.figure_path_3d, dpi=300)
                 print " ==> Generated figure with", len(self.points), "data points saved to:", self.figure_path_3d
 
-    def save2DResultFrom(self, result_key, grip_result_key='Result'):
+    def save2DResultFrom(self, result_key, grip_result_key='Result', force=False):
+        if not force:
+            for fname in os.listdir(self.target_dir):
+                if fname.endswith('.png'):
+                    print "Skipping existing plot"
+                    return
+
         plt.figure()
         plt.title(self.file)
         plt.ylabel('Y')
