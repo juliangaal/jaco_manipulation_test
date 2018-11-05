@@ -7,4 +7,4 @@ if __name__ == "__main__":
     for file in reader.files:
         print '\nAnalysing', os.path.basename(file)
         plotter = ResultPlotter(file, ['Time', 'Type', 'CurrentPose', 'TargetPose', 'Result'], delimiter=';')
-        plotter.save3DResultFrom('TargetPose')
+        plotter.save_3d_result('TargetPose')

@@ -1,6 +1,7 @@
 import os
 import sys
 from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -15,6 +16,7 @@ class Point:
     def __str__(self):
         return "({} {} {})".format(self.x, self.y, self.z)
 
+
 class AnchorPoint:
     def __init__(self, x, y, z, result):
         self.x = x
@@ -25,10 +27,12 @@ class AnchorPoint:
     def __str__(self):
         return "({} {} {} {})".format(self.x, self.y, self.z, self.result)
 
+
 class Color:
     success = 'limegreen'
     failure = 'r'
     kinda = 'yellow'
+
 
 class FileReader:
     def __init__(self, file):
@@ -45,6 +49,7 @@ class FileReader:
     def __del__(self):
         self.file.close()
 
+
 class ResultPlotter:
     def __init__(self, target_dir, file, labels, delimiter=',', template=False):
         self.target_dir = target_dir
@@ -55,7 +60,10 @@ class ResultPlotter:
         self.delimiter = delimiter
         self.points = []
         self.df = pd.read_csv(self.file, names=self.labels, sep=self.delimiter)
-
+    
+    def __point_rate(self, points, all_points):
+        return (len(points)/float(len(all_points))) * 100.0
+    
     def __extract_point(self, result_key, grip_result_key):
         data = self.df[result_key]
         results = self.df[grip_result_key]
@@ -76,7 +84,7 @@ class ResultPlotter:
                 print "!!", ".csv data malformed: ", d
                 pass
 
-    def save3DResultFrom(self, result_key, grip_result_key='Result', force=False):
+    def save_3d_result(self, result_key, grip_result_key='Result', force=False):
         if not force:
             for fname in os.listdir(self.target_dir):
                 if fname.endswith('.png'):
@@ -95,12 +103,18 @@ class ResultPlotter:
             X = [float(p.x) for p in self.points if p.success]
             Y = [float(p.y) for p in self.points if p.success]
             Z = [float(p.z) for p in self.points if p.success]
+            success_rate = self.__point_rate(X, self.points)
+            success_patch = mpatches.Patch(color=Color.success, label='Success ' + str(success_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.success, marker='o')
 
             X = [float(p.x) for p in self.points if not p.success]
             Y = [float(p.y) for p in self.points if not p.success]
             Z = [float(p.z) for p in self.points if not p.success]
+            failure_rate = self.__point_rate(X, self.points)
+            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.failure, marker='o')
+
+            plt.legend(handles=[success_patch, failure_patch], loc=4, fontsize=10)
 
             plt.savefig(self.figure_path_3d, dpi=300)
             print " ==> Generated figure with", len(self.points), "data points saved to:", self.figure_path_3d
@@ -108,17 +122,25 @@ class ResultPlotter:
             X = [float(p.x) for p in self.points if p.result == 'success']
             Y = [float(p.y) for p in self.points if p.result == 'success']
             Z = [float(p.z) for p in self.points if p.result == 'success']
+            success_rate = self.__point_rate(X, self.points)
+            success_patch = mpatches.Patch(color=Color.success, label='Success ' + str(success_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.success, marker='o')
 
             X = [float(p.x) for p in self.points if p.result == 'failure']
             Y = [float(p.y) for p in self.points if p.result == 'failure']
             Z = [float(p.z) for p in self.points if p.result == 'failure']
+            failure_rate = self.__point_rate(X, self.points)
+            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.failure, marker='o')
 
             X = [float(p.x) for p in self.points if p.result == 'kinda']
             Y = [float(p.y) for p in self.points if p.result == 'kinda']
             Z = [float(p.z) for p in self.points if p.result == 'kinda']
+            kinda_rate = self.__point_rate(X, self.points)
+            kinda_patch = mpatches.Patch(color=Color.kinda, label='Kinda ' + str(kinda_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.kinda, marker='o')
+
+            plt.legend(handles=[success_patch, failure_patch, kinda_patch], loc=4, fontsize=10)
 
             X = [float(p.x) for p in self.points if p.result == 'Default']
             if len(X) == len(self.points):
@@ -137,7 +159,7 @@ class ResultPlotter:
                 plt.savefig(self.figure_path_3d, dpi=300)
                 print " ==> Generated figure with", len(self.points), "data points saved to:", self.figure_path_3d
 
-    def save2DResultFrom(self, result_key, grip_result_key='Result', force=False):
+    def save_2d_result(self, result_key, grip_result_key='Result', force=False):
         if not force:
             for fname in os.listdir(self.target_dir):
                 if fname.endswith('.png'):
@@ -157,26 +179,40 @@ class ResultPlotter:
         if grip_result_key == 'Result':
             X = [float(p.x) for p in self.points if p.success]
             Y = [float(p.y) for p in self.points if p.success]
+            success_rate = self.__point_rate(X, self.points)
+            success_patch = mpatches.Patch(color=Color.success, label='Success ' + str(success_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.success)
 
             X = [float(p.x) for p in self.points if not p.success]
             Y = [float(p.y) for p in self.points if not p.success]
+            failure_rate = self.__point_rate(X, self.points)
+            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.failure)
+
+            plt.legend(handles=[success_patch, failure_patch], loc=4, fontsize=10)
 
             plt.savefig(self.figure_path_2d, dpi=300)
             print " ==> Generated figure with", len(self.points), "data points saved to:", self.figure_path_2d
         else:
             X = [float(p.x) for p in self.points if p.result == 'success']
             Y = [float(p.y) for p in self.points if p.result == 'success']
+            success_rate = self.__point_rate(X, self.points)
+            success_patch = mpatches.Patch(color=Color.success, label='Success ' + str(success_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.success)
 
             X = [float(p.x) for p in self.points if p.result == 'failure']
             Y = [float(p.y) for p in self.points if p.result == 'failure']
+            failure_rate = self.__point_rate(X, self.points)
+            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.failure)
 
             X = [float(p.x) for p in self.points if p.result == 'kinda']
             Y = [float(p.y) for p in self.points if p.result == 'kinda']
+            kinda_rate = self.__point_rate(X, self.points)
+            kinda_patch = mpatches.Patch(color=Color.kinda, label='Kinda ' + str(kinda_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.kinda)
+
+            plt.legend(handles=[success_patch, failure_patch, kinda_patch], loc=4, fontsize=10)
 
             X = [float(p.x) for p in self.points if p.result == 'Default']
             if len(X) == len(self.points):
