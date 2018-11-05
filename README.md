@@ -2,7 +2,7 @@
 
 ROS package to run tests of Jaco Robotic Arm and its [interfaces](https://github.com/juliangaal/jaco_manipulation) performance in the [ReGround Project](). 
 
-## How to run these tests
+## Running these tests
 
 ## Rule #1
 **Always keep a finger on the power button on Jaco**. Movements can be fast from time to time, and error can occur at any time, though very rarely. The first things to break are Jacos fingers...
@@ -47,3 +47,6 @@ ROS package to run tests of Jaco Robotic Arm and its [interfaces](https://github
 	* run `python analyse_baseline.py` in `<node_root>/scripts/analyse/`. This generates figures for all tests. 
 	* **If you want to analyse individual files, adjust the path in `analyse_baseline_template.py`**. Plot will be generated in `<node_root>/scripts/results/baseline/`
 	* All figures will be generated to `<node_root>/scripts/results/<some_folder>/<descriptor>_<mode>_fig.png>`, where `<mode>` is either '3d' for the 3d plot option and '2d' for the 3d plot option. Red points in the plot correspond to failed attempts, while green points refer to the successful ones.	
+	
+## Analyse results
+Generate files with by running `python analyse_recordings.py` in the `post/results` directory
