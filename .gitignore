@@ -1,4 +1,5 @@
 fig.png
 *.pyc
+*.png
 .DS_Store
 build
