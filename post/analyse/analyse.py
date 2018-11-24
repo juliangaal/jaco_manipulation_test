@@ -4,6 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 
 
 class Point:
@@ -31,7 +32,7 @@ class AnchorPoint:
 class Color:
     success = 'limegreen'
     failure = 'r'
-    kinda = 'yellow'
+    kinda = 'orange'
 
 
 class FileReader:
@@ -84,6 +85,14 @@ class ResultPlotter:
                 print "!!", ".csv data malformed: ", d
                 pass
 
+    def save_surface_coverage_result(self, key="Percent"):
+        frame = pd.DataFrame()
+
+        frame['11success'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'success'), self.df["Gripped"], np.nan)
+        frame['11kinda'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'kinda'), self.df["Gripped"], np.nan)
+        frame['11failure'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'failure'), self.df["Gripped"], np.nan)
+        print frame
+
     def save_3d_result(self, result_key, grip_result_key='Result', force=False):
         if not force:
             for fname in os.listdir(self.target_dir):
@@ -92,8 +101,13 @@ class ResultPlotter:
                     return
 
         fig = plt.figure()
-        fig.suptitle(self.file)
         ax = fig.add_subplot(111, projection='3d')
+        ax.set_xlim3d(0.2, 0.7)
+        ax.set_ylim3d(0.0, 0.58)
+        ax.set_zlim3d(0.15, 0.3)
+        ax.set_xlabel('robotic arm          <- X ->          kinect')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
 
         self.__extract_point(result_key, grip_result_key)
 
@@ -114,7 +128,7 @@ class ResultPlotter:
             failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.failure, marker='o')
 
-            plt.legend(handles=[success_patch, failure_patch], loc=4, fontsize=10)
+            plt.legend(handles=[success_patch, failure_patch], loc=0, fontsize=10)
 
             plt.savefig(self.figure_path_3d, dpi=300)
             print " ==> Generated figure with", len(self.points), "data points saved to:", self.figure_path_3d
@@ -140,7 +154,7 @@ class ResultPlotter:
             kinda_patch = mpatches.Patch(color=Color.kinda, label='Kinda ' + str(kinda_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.kinda, marker='o')
 
-            plt.legend(handles=[success_patch, failure_patch, kinda_patch], loc=4, fontsize=10)
+            plt.legend(handles=[success_patch, failure_patch, kinda_patch], loc=0, fontsize=10)
 
             X = [float(p.x) for p in self.points if p.result == 'Default']
             if len(X) == len(self.points):
@@ -149,13 +163,6 @@ class ResultPlotter:
             elif X:
                 print '!! Some default values were NOT changed. Adjust them to the recorded gripping status in column "Gripped" !!'
             else:
-                ax.set_xlim3d(0.2, 0.7)
-                ax.set_ylim3d(0.0, 0.58)
-                ax.set_zlim3d(0.15, 0.3)
-                ax.set_xlabel('robotic arm          <- X ->          kinect')
-                ax.set_ylabel('Y')
-                ax.set_zlabel('Z')
-
                 plt.savefig(self.figure_path_3d, dpi=300)
                 print " ==> Generated figure with", len(self.points), "data points saved to:", self.figure_path_3d
 
@@ -167,7 +174,6 @@ class ResultPlotter:
                     return
 
         plt.figure()
-        plt.title(self.file)
         plt.ylabel('Y')
         plt.xlabel('robotic arm          <- X ->          kinect')
 
@@ -189,7 +195,7 @@ class ResultPlotter:
             failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.failure)
 
-            plt.legend(handles=[success_patch, failure_patch], loc=4, fontsize=10)
+            plt.legend(handles=[success_patch, failure_patch], loc=0, fontsize=10)
 
             plt.savefig(self.figure_path_2d, dpi=300)
             print " ==> Generated figure with", len(self.points), "data points saved to:", self.figure_path_2d
@@ -212,7 +218,7 @@ class ResultPlotter:
             kinda_patch = mpatches.Patch(color=Color.kinda, label='Kinda ' + str(kinda_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.kinda)
 
-            plt.legend(handles=[success_patch, failure_patch, kinda_patch], loc=4, fontsize=10)
+            plt.legend(handles=[success_patch, failure_patch, kinda_patch], loc=0, fontsize=10)
 
             X = [float(p.x) for p in self.points if p.result == 'Default']
             if len(X) == len(self.points):
