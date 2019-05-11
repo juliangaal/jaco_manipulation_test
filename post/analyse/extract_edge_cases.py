@@ -18,7 +18,7 @@ def extract_points(df, points, result_key = "TargetPose", grip_result_key = "Gri
         if d == result_key or r == grip_result_key:
             continue
 
-        if r == 'kinda' or r == 'failure':
+        if r == 'middling' or r == 'failure':
             point, _ = d.split('/')
             point = point.replace('(', '').replace(')', '')
             x, y, z = point.split(',')

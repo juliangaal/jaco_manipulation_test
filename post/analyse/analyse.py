@@ -32,7 +32,7 @@ class AnchorPoint:
 class Color:
     success = 'limegreen'
     failure = 'r'
-    kinda = 'orange'
+    middling = 'orange'
 
 
 class FileReader:
@@ -89,7 +89,7 @@ class ResultPlotter:
         frame = pd.DataFrame()
 
         frame['11success'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'success'), self.df["Gripped"], np.nan)
-        frame['11kinda'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'kinda'), self.df["Gripped"], np.nan)
+        frame['11middling'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'middling'), self.df["Gripped"], np.nan)
         frame['11failure'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'failure'), self.df["Gripped"], np.nan)
         print frame
 
@@ -118,14 +118,14 @@ class ResultPlotter:
             Y = [float(p.y) for p in self.points if p.success]
             Z = [float(p.z) for p in self.points if p.success]
             success_rate = self.__point_rate(X, self.points)
-            success_patch = mpatches.Patch(color=Color.success, label='Success ' + str(success_rate) + '%')
+            success_patch = mpatches.Patch(color=Color.success, label='Success ' + "{0:.1f}".format(success_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.success, marker='o')
 
             X = [float(p.x) for p in self.points if not p.success]
             Y = [float(p.y) for p in self.points if not p.success]
             Z = [float(p.z) for p in self.points if not p.success]
             failure_rate = self.__point_rate(X, self.points)
-            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
+            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + "{0:.1f}".format(failure_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.failure, marker='o')
 
             plt.legend(handles=[success_patch, failure_patch], loc=0, fontsize=10)
@@ -137,24 +137,24 @@ class ResultPlotter:
             Y = [float(p.y) for p in self.points if p.result == 'success']
             Z = [float(p.z) for p in self.points if p.result == 'success']
             success_rate = self.__point_rate(X, self.points)
-            success_patch = mpatches.Patch(color=Color.success, label='Success ' + str(success_rate) + '%')
+            success_patch = mpatches.Patch(color=Color.success, label='Success ' + "{0:.1f}".format(success_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.success, marker='o')
 
             X = [float(p.x) for p in self.points if p.result == 'failure']
             Y = [float(p.y) for p in self.points if p.result == 'failure']
             Z = [float(p.z) for p in self.points if p.result == 'failure']
             failure_rate = self.__point_rate(X, self.points)
-            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
+            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + "{0:.1f}".format(failure_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.failure, marker='o')
 
-            X = [float(p.x) for p in self.points if p.result == 'kinda']
-            Y = [float(p.y) for p in self.points if p.result == 'kinda']
-            Z = [float(p.z) for p in self.points if p.result == 'kinda']
-            kinda_rate = self.__point_rate(X, self.points)
-            kinda_patch = mpatches.Patch(color=Color.kinda, label='Kinda ' + str(kinda_rate) + '%')
-            ax.scatter(X, Y, Z, c=Color.kinda, marker='o')
+            X = [float(p.x) for p in self.points if p.result == 'middling']
+            Y = [float(p.y) for p in self.points if p.result == 'middling']
+            Z = [float(p.z) for p in self.points if p.result == 'middling']
+            middling_rate = self.__point_rate(X, self.points)
+            middling_patch = mpatches.Patch(color=Color.middling, label='Middling ' + "{0:.1f}".format(middling_rate) + '%')
+            ax.scatter(X, Y, Z, c=Color.middling, marker='o')
 
-            plt.legend(handles=[success_patch, failure_patch, kinda_patch], loc=0, fontsize=10)
+            plt.legend(handles=[success_patch, failure_patch, middling_patch], loc=0, fontsize=10)
 
             X = [float(p.x) for p in self.points if p.result == 'Default']
             if len(X) == len(self.points):
@@ -186,13 +186,13 @@ class ResultPlotter:
             X = [float(p.x) for p in self.points if p.success]
             Y = [float(p.y) for p in self.points if p.success]
             success_rate = self.__point_rate(X, self.points)
-            success_patch = mpatches.Patch(color=Color.success, label='Success ' + str(success_rate) + '%')
+            success_patch = mpatches.Patch(color=Color.success, label='Success ' + "{0:.1f}".format(success_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.success)
 
             X = [float(p.x) for p in self.points if not p.success]
             Y = [float(p.y) for p in self.points if not p.success]
             failure_rate = self.__point_rate(X, self.points)
-            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
+            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + "{0:.1f}".format(failure_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.failure)
 
             plt.legend(handles=[success_patch, failure_patch], loc=0, fontsize=10)
@@ -203,22 +203,22 @@ class ResultPlotter:
             X = [float(p.x) for p in self.points if p.result == 'success']
             Y = [float(p.y) for p in self.points if p.result == 'success']
             success_rate = self.__point_rate(X, self.points)
-            success_patch = mpatches.Patch(color=Color.success, label='Success ' + str(success_rate) + '%')
+            success_patch = mpatches.Patch(color=Color.success, label='Success ' + "{0:.1f}".format(success_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.success)
 
             X = [float(p.x) for p in self.points if p.result == 'failure']
             Y = [float(p.y) for p in self.points if p.result == 'failure']
             failure_rate = self.__point_rate(X, self.points)
-            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + str(failure_rate) + '%')
+            failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + "{0:.1f}".format(failure_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.failure)
 
-            X = [float(p.x) for p in self.points if p.result == 'kinda']
-            Y = [float(p.y) for p in self.points if p.result == 'kinda']
-            kinda_rate = self.__point_rate(X, self.points)
-            kinda_patch = mpatches.Patch(color=Color.kinda, label='Kinda ' + str(kinda_rate) + '%')
-            plt.scatter(X, Y, marker='o', c=Color.kinda)
+            X = [float(p.x) for p in self.points if p.result == 'middling']
+            Y = [float(p.y) for p in self.points if p.result == 'middling']
+            middling_rate = self.__point_rate(X, self.points)
+            middling_patch = mpatches.Patch(color=Color.middling, label='Middling ' + "{0:.1f}".format(middling_rate) + '%')
+            plt.scatter(X, Y, marker='o', c=Color.middling)
 
-            plt.legend(handles=[success_patch, failure_patch, kinda_patch], loc=0, fontsize=10)
+            plt.legend(handles=[success_patch, failure_patch, middling_patch], loc=0, fontsize=10)
 
             X = [float(p.x) for p in self.points if p.result == 'Default']
             if len(X) == len(self.points):

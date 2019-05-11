@@ -20,7 +20,7 @@
 ---
 ../results/anchoring/01/01_anchoring_test_recording.csv
   failure: 6.0%
-  kinda: 3.0%
+  middling: 3.0%
   success: 91.0%
   Total grasp trials: 100
 ---
@@ -36,19 +36,19 @@
 ---
 ../results/anchoring_edge_case/connect/combined/combined_anchoring_edge_case_test_recording.csv
   failure: 23.5294117647%
-  kinda: 2.94117647059%
+  middling: 2.94117647059%
   success: 73.5294117647%
   Total grasp trials: 34
 ---
 ../results/anchoring/combined/combined_anchoring_test_recording.csv
   failure: 6.56565656566%
-  kinda: 2.0202020202%
+  middling: 2.0202020202%
   success: 91.4141414141%
   Total grasp trials: 198
 ---
 ../results/anchoring/02/02_anchoring_test_recording.csv
   failure: 7.14285714286%
-  kinda: 1.02040816327%
+  middling: 1.02040816327%
   success: 91.8367346939%
   Total grasp trials: 98
 ---
@@ -64,7 +64,7 @@
 ../results/anchoring_edge_case/combined_anchoring_edge_case_test_recording_fails.csv
   failure: 76.4705882353%
   success: 5.88235294118%
-  kinda: 17.6470588235%
+  middling: 17.6470588235%
   Total grasp trials: 17
 ---
 ../results/baseline/01/01_baseline_test_recording.csv
@@ -73,7 +73,7 @@
 ---
 ../results/anchoring_edge_case/connect/01/01_anchoring_edge_case_test_recording.csv
   failure: 29.4117647059%
-  kinda: 5.88235294118%
+  middling: 5.88235294118%
   success: 64.7058823529%
   Total grasp trials: 17
 ---

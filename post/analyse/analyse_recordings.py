@@ -11,16 +11,16 @@ def analyse_dir(path):
 
                 if "baseline" in dirpath:
                     plotter = ResultPlotter(dirpath, fname, ['Time', 'Type', 'CurrentPose', 'TargetPose', 'Result'], delimiter=';')
-                    plotter.save_2d_result('TargetPose', force=False)
-                    plotter.save_3d_result('TargetPose', force=False)
+                    plotter.save_2d_result('TargetPose', force=True)
+                    plotter.save_3d_result('TargetPose', force=True)
                 elif "obstacle_anchoring" in dirpath:
                     plotter = ResultPlotter(dirpath, fname, ['Time','Type','CurrentPose','TargetPose','Obstacles','Result','Gripped','Percent'], delimiter=';')
-                    plotter.save_3d_result('TargetPose', 'Gripped', force=False)
-                    plotter.save_2d_result('TargetPose', 'Gripped', force=False)
+                    plotter.save_3d_result('TargetPose', 'Gripped', force=True)
+                    plotter.save_2d_result('TargetPose', 'Gripped', force=True)
                 else:
                     plotter = ResultPlotter(dirpath, fname, ['Time', 'Type', 'CurrentPose', 'TargetPose', 'Result', 'Gripped'], delimiter=';')
-                    plotter.save_3d_result('TargetPose', 'Gripped', force=False)
-                    plotter.save_2d_result('TargetPose', 'Gripped', force=False)
+                    plotter.save_3d_result('TargetPose', 'Gripped', force=True)
+                    plotter.save_2d_result('TargetPose', 'Gripped', force=True)
 
 if __name__ == "__main__":
     analyse_dir("../results")
