@@ -32,7 +32,7 @@ class AnchorPoint:
 class Color:
     success = 'limegreen'
     failure = 'r'
-    middling = 'orange'
+    inconclusive = 'orange'
 
 
 class FileReader:
@@ -89,7 +89,7 @@ class ResultPlotter:
         frame = pd.DataFrame()
 
         frame['11success'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'success'), self.df["Gripped"], np.nan)
-        frame['11middling'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'middling'), self.df["Gripped"], np.nan)
+        frame['11inconclusive'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'inconclusive'), self.df["Gripped"], np.nan)
         frame['11failure'] = np.where((self.df[key] == '11') & (self.df['Gripped'] == 'failure'), self.df["Gripped"], np.nan)
         print frame
 
@@ -147,14 +147,14 @@ class ResultPlotter:
             failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + "{0:.1f}".format(failure_rate) + '%')
             ax.scatter(X, Y, Z, c=Color.failure, marker='o')
 
-            X = [float(p.x) for p in self.points if p.result == 'middling']
-            Y = [float(p.y) for p in self.points if p.result == 'middling']
-            Z = [float(p.z) for p in self.points if p.result == 'middling']
-            middling_rate = self.__point_rate(X, self.points)
-            middling_patch = mpatches.Patch(color=Color.middling, label='Middling ' + "{0:.1f}".format(middling_rate) + '%')
-            ax.scatter(X, Y, Z, c=Color.middling, marker='o')
+            X = [float(p.x) for p in self.points if p.result == 'inconclusive']
+            Y = [float(p.y) for p in self.points if p.result == 'inconclusive']
+            Z = [float(p.z) for p in self.points if p.result == 'inconclusive']
+            inconclusive_rate = self.__point_rate(X, self.points)
+            inconclusive_patch = mpatches.Patch(color=Color.inconclusive, label='Inconclusive ' + "{0:.1f}".format(inconclusive_rate) + '%')
+            ax.scatter(X, Y, Z, c=Color.inconclusive, marker='o')
 
-            plt.legend(handles=[success_patch, failure_patch, middling_patch], loc=0, fontsize=10)
+            plt.legend(handles=[success_patch, failure_patch, inconclusive_patch], loc=0, fontsize=10)
 
             X = [float(p.x) for p in self.points if p.result == 'Default']
             if len(X) == len(self.points):
@@ -212,13 +212,13 @@ class ResultPlotter:
             failure_patch = mpatches.Patch(color=Color.failure, label='Failure ' + "{0:.1f}".format(failure_rate) + '%')
             plt.scatter(X, Y, marker='o', c=Color.failure)
 
-            X = [float(p.x) for p in self.points if p.result == 'middling']
-            Y = [float(p.y) for p in self.points if p.result == 'middling']
-            middling_rate = self.__point_rate(X, self.points)
-            middling_patch = mpatches.Patch(color=Color.middling, label='Middling ' + "{0:.1f}".format(middling_rate) + '%')
-            plt.scatter(X, Y, marker='o', c=Color.middling)
+            X = [float(p.x) for p in self.points if p.result == 'inconclusive']
+            Y = [float(p.y) for p in self.points if p.result == 'inconclusive']
+            inconclusive_rate = self.__point_rate(X, self.points)
+            inconclusive_patch = mpatches.Patch(color=Color.inconclusive, label='Inconclusive ' + "{0:.1f}".format(inconclusive_rate) + '%')
+            plt.scatter(X, Y, marker='o', c=Color.inconclusive)
 
-            plt.legend(handles=[success_patch, failure_patch, middling_patch], loc=0, fontsize=10)
+            plt.legend(handles=[success_patch, failure_patch, inconclusive_patch], loc=0, fontsize=10)
 
             X = [float(p.x) for p in self.points if p.result == 'Default']
             if len(X) == len(self.points):
